@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./poiro-backend
+      dockerfile: Dockerfile
+    container_name: poiro-backend-dev
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./poiro-backend/.env
+    environment:
+      - FRONTEND_URL=http://localhost:3000
+    volumes:
+      - ./poiro-backend:/app
+    command: uvicorn server:socket_app --host 0.0.0.0 --port 8000 --reload
+    restart: unless-stopped
+    networks:
+      - poiro-net
+
+  frontend:
+    image: node:20-alpine
+    container_name: poiro-frontend-dev
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+      - VITE_SOCKET_URL=http://localhost:8000
+    volumes:
+      - ./poiro-frontend:/app
+      - /app/node_modules
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    depends_on:
+      - backend
+    networks:
+      - poiro-net
+
+networks:
+  poiro-net:
+    driver: bridge
