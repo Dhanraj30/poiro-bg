@@ -18,7 +18,7 @@ export function LoginPage() {
       const res = await authApi.login(form)
       setAuth(res.data.user, res.data.access_token)
       toast.success('Welcome back, fighter!')
-      navigate('/')
+      navigate('/lobby')
     } catch (err: any) {
       toast.error(err.response?.data?.detail || 'Login failed')
     } finally {
@@ -32,10 +32,10 @@ export function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 bg-battle-accent rounded-lg flex items-center justify-center glow-orange">
-              <Zap className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 bg-battle-accent flex items-center justify-center glow-orange border border-battle-accent">
+              <Zap className="w-7 h-7 text-[#520071]" />
             </div>
-            <h1 className="font-display text-5xl text-battle-text tracking-wider">POIRO</h1>
+            <h1 className="font-display text-5xl text-battle-text tracking-wider uppercase">POIRO</h1>
           </div>
           <p className="text-battle-textDim text-sm">AI Creative Battle Platform</p>
         </div>
@@ -45,25 +45,25 @@ export function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-battle-textDim mb-1.5 uppercase tracking-wider">Email</label>
+              <label className="block text-xs font-mono text-battle-textDim mb-1.5 uppercase tracking-wider">Email</label>
               <input
                 type="email"
                 required
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full bg-battle-surface border border-battle-border rounded-lg px-4 py-3 text-battle-text placeholder-battle-muted focus:outline-none focus:border-battle-accent transition-colors"
+                className="w-full bg-battle-surface/50 border border-battle-border rounded-none px-4 py-3 text-battle-text font-mono placeholder-battle-muted focus:outline-none focus:border-battle-accent focus:shadow-[0_0_15px_rgba(236,178,255,0.2)] transition-all"
                 placeholder="fighter@arena.io"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-battle-textDim mb-1.5 uppercase tracking-wider">Password</label>
+              <label className="block text-xs font-mono text-battle-textDim mb-1.5 uppercase tracking-wider">Password</label>
               <input
                 type="password"
                 required
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
-                className="w-full bg-battle-surface border border-battle-border rounded-lg px-4 py-3 text-battle-text placeholder-battle-muted focus:outline-none focus:border-battle-accent transition-colors"
+                className="w-full bg-battle-surface/50 border border-battle-border rounded-none px-4 py-3 text-battle-text font-mono placeholder-battle-muted focus:outline-none focus:border-battle-accent focus:shadow-[0_0_15px_rgba(236,178,255,0.2)] transition-all"
                 placeholder="••••••••"
               />
             </div>
@@ -71,7 +71,7 @@ export function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-battle-accent hover:bg-battle-accentHover disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition-all duration-200 glow-orange mt-2"
+              className="w-full bg-battle-accent hover:bg-battle-accentHover disabled:opacity-50 disabled:cursor-not-allowed text-[#520071] font-display font-bold py-3 rounded-none transition-all duration-200 glow-orange mt-4 tracking-widest text-lg uppercase"
             >
               {loading ? 'Entering...' : 'Enter Battle'}
             </button>

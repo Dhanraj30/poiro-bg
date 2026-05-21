@@ -31,8 +31,8 @@ export function JoinPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-battle-bg">
       <div className="text-center">
-        <div className="w-12 h-12 bg-battle-accent rounded-xl flex items-center justify-center glow-orange mx-auto mb-6">
-          <Zap className="w-7 h-7 text-white" />
+        <div className="w-12 h-12 bg-battle-accent rounded-none flex items-center justify-center glow-orange border border-battle-accent mx-auto mb-6">
+          <Zap className="w-7 h-7 text-[#520071]" />
         </div>
         {joining ? (
           <>
