@@ -38,7 +38,7 @@ export function RoomPage() {
         room={room}
         isHost={isHost}
         isConnected={isConnected}
-        onBack={() => navigate('/')}
+        onBack={() => navigate('/lobby')}
       />
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-6 grid grid-cols-1 xl:grid-cols-4 gap-6">
