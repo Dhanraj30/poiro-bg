@@ -255,7 +255,7 @@ export function LandingPage() {
 <div className="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
 <div className="flex flex-col gap-2">
 <span className="text-on-surface font-black font-display-lg text-2xl tracking-tighter">POIRO</span>
-<p className="font-label-sm text-label-sm tracking-tight text-outline uppercase">© 2024 POIRO NEURAL SYSTEMS. ALL RIGHTS RESERVED.</p>
+<p className="font-label-sm text-label-sm tracking-tight text-outline uppercase">© 2026 POIRO NEURAL SYSTEMS. ALL RIGHTS RESERVED.</p>
 </div>
 <div className="flex gap-8">
 <a className="font-label-sm text-label-sm tracking-tight text-outline hover:text-tertiary transition-all ease-in-out duration-150" href="#">Terms of Service</a>
