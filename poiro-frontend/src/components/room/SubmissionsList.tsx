@@ -56,7 +56,7 @@ function ScoreModal({
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-medium text-battle-textDim mb-2 uppercase tracking-wider">
+            <label className="block text-xs font-mono text-battle-textDim mb-2 uppercase tracking-widest">
               Score: <span className="text-battle-gold text-lg ml-1">{score}</span>/100
             </label>
             <input
@@ -75,12 +75,12 @@ function ScoreModal({
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-battle-textDim mb-1.5 uppercase tracking-wider">Judge Notes (optional)</label>
+            <label className="block text-xs font-mono text-battle-textDim mb-1.5 uppercase tracking-widest">Judge Notes (optional)</label>
             <textarea
               rows={2}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full bg-battle-surface border border-battle-border rounded-lg px-3 py-2 text-battle-text text-sm placeholder-battle-muted focus:outline-none focus:border-battle-accent resize-none"
+              className="w-full bg-battle-surface/50 border border-battle-border rounded-none px-3 py-2 text-battle-text font-mono text-sm placeholder-battle-muted focus:outline-none focus:border-battle-accent focus:shadow-[0_0_15px_rgba(236,178,255,0.2)] resize-none transition-all"
               placeholder="Why did you give this score?"
             />
           </div>
@@ -99,14 +99,14 @@ function ScoreModal({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 border border-battle-border text-battle-textDim py-2.5 rounded-lg text-sm hover:border-battle-text transition-colors"
+              className="flex-1 border border-battle-border text-battle-textDim py-2.5 rounded-none font-mono tracking-widest uppercase text-sm hover:border-battle-text transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-battle-accent hover:bg-battle-accentHover disabled:opacity-50 text-white font-semibold py-2.5 rounded-lg text-sm transition-all flex items-center justify-center gap-2"
+              className="flex-1 bg-battle-accent hover:bg-battle-accentHover disabled:opacity-50 text-[#520071] font-display font-bold py-2.5 rounded-none uppercase tracking-widest text-sm transition-all flex items-center justify-center gap-2 glow-orange"
             >
               {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Star className="w-4 h-4" />}
               Confirm Score
@@ -142,7 +142,7 @@ function SubmissionCard({
         <div className="p-4">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-2.5 flex-1 min-w-0">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border flex-shrink-0 ${
+              <div className={`w-8 h-8 rounded-none flex items-center justify-center text-xs font-bold border flex-shrink-0 ${
                 submission.eliminated
                   ? 'bg-battle-red/10 border-battle-red/30 text-battle-red'
                   : 'bg-battle-neonDim border-battle-neon/30 text-battle-neon'
@@ -151,10 +151,10 @@ function SubmissionCard({
               </div>
               <div className="min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-semibold text-battle-text text-sm">{submission.username}</span>
+                  <span className="font-mono tracking-widest uppercase text-battle-text text-sm">{submission.username}</span>
                   {isOwn && <span className="text-xs text-battle-textDim">(you)</span>}
                   {submission.score !== null && (
-                    <span className="text-xs bg-battle-gold/10 text-battle-gold border border-battle-gold/30 px-2 py-0.5 rounded font-mono">
+                    <span className="text-xs bg-battle-gold/10 text-battle-gold border border-battle-gold/30 px-2 py-0.5 rounded-none font-mono">
                       {submission.score}/100
                     </span>
                   )}
@@ -167,7 +167,7 @@ function SubmissionCard({
             </div>
 
             <div className="flex items-center gap-2 flex-shrink-0">
-              <span className={`text-xs px-2 py-0.5 rounded font-mono ${STATUS_STYLE[submission.status]}`}>
+              <span className={`text-xs px-2 py-0.5 rounded-none font-mono tracking-widest uppercase ${STATUS_STYLE[submission.status]}`}>
                 {submission.status}
               </span>
 
@@ -219,7 +219,7 @@ function SubmissionCard({
           {canScore && (
             <button
               onClick={() => setShowScore(true)}
-              className="mt-3 flex items-center gap-1.5 text-sm bg-battle-accent/10 hover:bg-battle-accent/20 border border-battle-accent text-battle-accent px-3 py-1.5 rounded-lg transition-all"
+              className="mt-3 flex items-center gap-1.5 text-sm bg-battle-accent/10 hover:bg-battle-accent/20 border border-battle-accent text-battle-accent px-3 py-1.5 rounded-none font-mono tracking-widest uppercase transition-all"
             >
               <Star className="w-3.5 h-3.5" />
               Judge this submission
@@ -236,7 +236,7 @@ function SubmissionCard({
         {/* Expanded output */}
         {expanded && submission.generated_output && (
           <div className="border-t border-battle-border p-4 bg-battle-surface/50">
-            <p className="text-xs text-battle-textDim mb-3 uppercase tracking-wider font-medium">AI Generated Output</p>
+            <p className="text-xs text-battle-textDim mb-3 uppercase tracking-widest font-mono">AI Generated Output</p>
             <div className="prose prose-invert prose-sm max-w-none text-battle-text">
               <ReactMarkdown>{submission.generated_output}</ReactMarkdown>
             </div>

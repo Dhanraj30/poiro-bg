@@ -47,8 +47,8 @@ export function RoundPanel({ room, isHost }: Props) {
                 <span className="font-display text-xl text-battle-text tracking-wide">
                   ROUND {activeRound.round_number}
                 </span>
-                <span className={`text-xs font-mono border px-2 py-0.5 rounded uppercase ${
-                  activeRound.status === 'active' ? 'text-battle-neon border-battle-neon animate-pulse' :
+                <span className={`text-xs font-mono border px-2 py-0.5 rounded-none uppercase tracking-widest ${
+                  activeRound.status === 'active' ? 'text-battle-neon border-battle-neon animate-pulse glow-cyan' :
                   activeRound.status === 'closed' ? 'text-battle-gold border-battle-gold' :
                   'text-battle-muted border-battle-muted'
                 }`}>
@@ -77,7 +77,7 @@ export function RoundPanel({ room, isHost }: Props) {
               <button
                 onClick={startRound}
                 disabled={loading}
-                className="flex items-center gap-2 bg-battle-neon/10 hover:bg-battle-neon/20 border border-battle-neon text-battle-neon px-4 py-2.5 rounded-lg font-semibold text-sm transition-all disabled:opacity-50"
+                className="flex items-center gap-2 bg-battle-neon/10 hover:bg-battle-neon/20 border border-battle-neon text-battle-neon px-4 py-2.5 rounded-none font-display font-bold uppercase tracking-widest text-sm transition-all disabled:opacity-50 glow-cyan"
               >
                 {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4" />}
                 {activeRound ? 'Next Round' : 'Start Round'}
@@ -88,7 +88,7 @@ export function RoundPanel({ room, isHost }: Props) {
               <button
                 onClick={closeRound}
                 disabled={loading}
-                className="flex items-center gap-2 bg-battle-gold/10 hover:bg-battle-gold/20 border border-battle-gold text-battle-gold px-4 py-2.5 rounded-lg font-semibold text-sm transition-all disabled:opacity-50"
+                className="flex items-center gap-2 bg-battle-gold/10 hover:bg-battle-gold/20 border border-battle-gold text-battle-gold px-4 py-2.5 rounded-none font-display font-bold uppercase tracking-widest text-sm transition-all disabled:opacity-50"
               >
                 {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Square className="w-4 h-4" />}
                 Close Round

@@ -61,7 +61,7 @@ export function SubmitPromptForm({ roundId, existingSubmission }: Props) {
     return (
       <div className="battle-card p-5">
         <h3 className="font-display text-lg text-battle-text tracking-wide mb-3">YOUR SUBMISSION</h3>
-        <div className="bg-battle-surface rounded-lg p-3 mb-3">
+        <div className="bg-battle-surface/50 border border-battle-border rounded-none p-3 mb-3">
           <p className="text-xs text-battle-textDim mb-1">Your prompt:</p>
           <p className="text-battle-text text-sm">{existingSubmission.prompt}</p>
         </div>
@@ -81,7 +81,7 @@ export function SubmitPromptForm({ roundId, existingSubmission }: Props) {
           <button
             onClick={handleRetry}
             disabled={retrying}
-            className="mt-3 flex items-center gap-2 text-sm bg-battle-accent/10 border border-battle-accent text-battle-accent px-3 py-2 rounded-lg hover:bg-battle-accent/20 transition-all disabled:opacity-50"
+            className="mt-3 flex items-center gap-2 text-sm bg-battle-accent/10 border border-battle-accent text-battle-accent px-3 py-2 rounded-none hover:bg-battle-accent/20 transition-all disabled:opacity-50 font-mono tracking-widest uppercase"
           >
             {retrying ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
             Retry Generation
@@ -100,7 +100,7 @@ export function SubmitPromptForm({ roundId, existingSubmission }: Props) {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="Describe your creative direction for the AI to generate from... Be bold, specific, and unexpected."
-          className="w-full bg-battle-surface border border-battle-border rounded-lg px-4 py-3 text-battle-text placeholder-battle-muted focus:outline-none focus:border-battle-accent transition-colors resize-none text-sm"
+          className="w-full bg-battle-surface/50 border border-battle-border rounded-none px-4 py-3 text-battle-text font-mono placeholder-battle-muted focus:outline-none focus:border-battle-accent focus:shadow-[0_0_15px_rgba(236,178,255,0.2)] transition-all resize-none text-sm"
         />
         <div className="flex items-center justify-between">
           <span className={`text-xs ${prompt.length < 10 ? 'text-battle-muted' : 'text-battle-green'}`}>
@@ -109,7 +109,7 @@ export function SubmitPromptForm({ roundId, existingSubmission }: Props) {
           <button
             type="submit"
             disabled={submitting || prompt.trim().length < 10}
-            className="flex items-center gap-2 bg-battle-accent hover:bg-battle-accentHover disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold px-5 py-2.5 rounded-lg transition-all text-sm"
+            className="flex items-center gap-2 bg-battle-accent hover:bg-battle-accentHover disabled:opacity-50 disabled:cursor-not-allowed text-[#520071] font-display font-bold uppercase tracking-widest px-5 py-2.5 rounded-none transition-all text-sm glow-orange"
           >
             {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
             {submitting ? 'Submitting...' : 'Submit to Battle'}

@@ -25,11 +25,11 @@ export function ParticipantsList({ participants, submissions, currentUserId, act
       {host && (
         <div className="mb-4 pb-4 border-b border-battle-border">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-battle-accent/20 rounded-full flex items-center justify-center border border-battle-accent/40">
+            <div className="w-8 h-8 bg-battle-accent/20 rounded-none flex items-center justify-center border border-battle-accent/40">
               <Crown className="w-4 h-4 text-battle-accent" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-battle-text truncate">{host.username}</p>
+              <p className="text-sm font-mono tracking-widest uppercase text-battle-text truncate">{host.username}</p>
               <p className="text-xs text-battle-accent">Host</p>
             </div>
             {host.user_id === currentUserId && (
@@ -52,11 +52,11 @@ export function ParticipantsList({ participants, submissions, currentUserId, act
           return (
             <div
               key={p.id}
-              className={`flex items-center gap-2.5 p-2.5 rounded-lg transition-colors ${
+              className={`flex items-center gap-2.5 p-2.5 rounded-none transition-colors ${
                 p.eliminated ? 'opacity-40' : 'hover:bg-battle-surface'
               } ${isMe ? 'bg-battle-surface' : ''}`}
             >
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border ${
+              <div className={`w-8 h-8 rounded-none flex items-center justify-center text-xs font-bold border ${
                 p.eliminated
                   ? 'bg-battle-red/10 border-battle-red/30 text-battle-red'
                   : 'bg-battle-neonDim border-battle-neon/30 text-battle-neon'
@@ -66,7 +66,7 @@ export function ParticipantsList({ participants, submissions, currentUserId, act
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <p className={`text-sm font-medium truncate ${p.eliminated ? 'line-through text-battle-muted' : 'text-battle-text'}`}>
+                  <p className={`text-sm font-mono tracking-widest uppercase truncate ${p.eliminated ? 'line-through text-battle-muted' : 'text-battle-text'}`}>
                     {p.username}
                   </p>
                   {isMe && <span className="text-xs text-battle-textDim">(you)</span>}

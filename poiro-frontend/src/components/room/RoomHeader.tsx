@@ -37,17 +37,17 @@ export function RoomHeader({ room, isHost, isConnected, onBack }: Props) {
           <ArrowLeft className="w-5 h-5" />
         </button>
 
-        <div className="w-7 h-7 bg-battle-accent rounded flex items-center justify-center glow-orange">
-          <Zap className="w-4 h-4 text-white" />
+        <div className="w-8 h-8 bg-battle-accent rounded-none flex items-center justify-center glow-orange border border-battle-accent">
+          <Zap className="w-4 h-4 text-[#520071]" />
         </div>
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-3 flex-wrap">
-            <h1 className="font-display text-2xl text-battle-text tracking-wide truncate">{room.name}</h1>
+            <h1 className="font-display text-2xl text-battle-text tracking-wide truncate uppercase mt-1">{room.name}</h1>
             {isHost && (
-              <span className="text-xs bg-battle-accent/20 text-battle-accent border border-battle-accent/30 px-2 py-0.5 rounded font-medium">HOST</span>
+              <span className="text-xs bg-battle-accent/20 text-battle-accent border border-battle-accent/30 px-2 py-0.5 rounded-none font-mono tracking-widest uppercase">HOST</span>
             )}
-            <span className={`text-xs border px-2 py-0.5 rounded font-mono ${badge.class}`}>{badge.label}</span>
+            <span className={`text-xs border px-2 py-0.5 rounded-none font-mono tracking-widest uppercase ${badge.class}`}>{badge.label}</span>
           </div>
         </div>
 
@@ -61,7 +61,7 @@ export function RoomHeader({ room, isHost, isConnected, onBack }: Props) {
           {/* Room code */}
           <button
             onClick={copyCode}
-            className="flex items-center gap-2 bg-battle-card border border-battle-border rounded-lg px-3 py-1.5 hover:border-battle-neon transition-colors group"
+            className="flex items-center gap-2 bg-battle-card border border-battle-border rounded-none px-3 py-1.5 hover:border-battle-neon transition-colors group"
             title="Copy room code"
           >
             <span className="font-mono text-battle-neon text-sm tracking-widest">{room.code}</span>
