@@ -38,7 +38,7 @@ export function LobbyPageNew() {
 <nav className="flex-1 py-4 overflow-y-auto">
 <div className="px-3 mb-2">
 <button className="w-full py-3 bg-secondary/10 text-secondary border-r-4 border-secondary flex items-center gap-3 px-4 transition-transform duration-300 ease-in-out hover:glow-secondary">
-<span className="material-symbols-outlined" style={{ fontVariationSettings: ''FILL' 1' }}>swords</span>
+<span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>swords</span>
 <span className="font-label-technical text-label-sm uppercase tracking-wider">Live Battles</span>
 </button>
 </div>
@@ -301,7 +301,7 @@ export function LobbyPageNew() {
 <span className="text-outline font-label-technical text-[10px] uppercase tracking-widest mb-1">Available Credits</span>
 <div className="flex items-end justify-between">
 <div className="flex items-center gap-2">
-<span className="material-symbols-outlined text-secondary" style={{ fontVariationSettings: ''FILL' 1' }}>payments</span>
+<span className="material-symbols-outlined text-secondary" style={{ fontVariationSettings: "'FILL' 1" }}>payments</span>
 <span className="font-headline-lg text-secondary leading-none">12,850</span>
 </div>
 <button className="bg-secondary/10 hover:bg-secondary/20 p-1 tech-corner transition-colors">
