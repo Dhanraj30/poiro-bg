@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>POIRO // Battle Lobby</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=JetBrains+Mono:wght@100..800&amp;family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @layer base {
+            body {
+                @apply bg-background text-on-background antialiased overflow-x-hidden;
+            }
+            .material-symbols-outlined {
+                font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            }
+        }
+        .glow-primary { box-shadow: 0 0 15px rgba(236, 186, 255, 0.3); }
+        .glow-secondary { box-shadow: 0 0 15px rgba(211, 251, 255, 0.2); }
+        .glass-panel {
+            background: rgba(20, 19, 20, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(157, 139, 160, 0.2);
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(236, 186, 255, 0.2), transparent);
+            position: absolute;
+            animation: scan 3s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: -2px; }
+            100% { top: 100%; }
+        }
+        .tech-corner {
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "inverse-on-surface": "#313031",
+                "outline": "#9d8ba0",
+                "on-background": "#e5e2e3",
+                "on-surface-variant": "#d4c0d7",
+                "error-container": "#93000a",
+                "error": "#ffb4ab",
+                "surface-bright": "#3a393a",
+                "surface-tint": "#ecb2ff",
+                "on-surface": "#e5e2e3",
+                "on-primary-fixed-variant": "#74009f",
+                "primary-fixed": "#f8d8ff",
+                "surface-container-high": "#2a2a2b",
+                "secondary-fixed": "#7df4ff",
+                "surface-container": "#201f20",
+                "on-primary-fixed": "#320047",
+                "primary": "#ecb2ff",
+                "secondary-container": "#00eefc",
+                "background": "#131314",
+                "on-secondary": "#00363a",
+                "on-secondary-fixed-variant": "#004f54",
+                "on-tertiary": "#053900",
+                "surface-container-lowest": "#0e0e0f",
+                "surface-container-highest": "#353436",
+                "surface-dim": "#131314",
+                "on-error": "#690005",
+                "on-tertiary-fixed": "#022100",
+                "primary-fixed-dim": "#ecb2ff",
+                "tertiary-fixed-dim": "#2ae500",
+                "secondary": "#d3fbff",
+                "on-secondary-fixed": "#002022",
+                "outline-variant": "#514255",
+                "inverse-surface": "#e5e2e3",
+                "on-error-container": "#ffdad6",
+                "on-tertiary-fixed-variant": "#095300",
+                "tertiary": "#2ae500",
+                "primary-container": "#bd00ff",
+                "on-tertiary-container": "#ffffff",
+                "on-primary-container": "#ffffff",
+                "on-primary": "#520071",
+                "on-secondary-container": "#00686f",
+                "tertiary-fixed": "#79ff5b",
+                "secondary-fixed-dim": "#00dbe9",
+                "inverse-primary": "#9900cf",
+                "surface-container-low": "#1c1b1c",
+                "surface-variant": "#353436",
+                "surface": "#131314",
+                "tertiary-container": "#168900"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "margin-desktop": "48px",
+                "container-max": "1440px",
+                "margin-mobile": "16px",
+                "unit": "4px",
+                "gutter": "16px"
+              },
+              "fontFamily": {
+                "display-lg": ["Space Grotesk"],
+                "label-technical": ["JetBrains Mono"],
+                "headline-xl": ["Space Grotesk"],
+                "body-md": ["Geist"],
+                "body-lg": ["Geist"],
+                "headline-lg": ["Space Grotesk"],
+                "label-sm": ["JetBrains Mono"],
+                "display-lg-mobile": ["Space Grotesk"]
+              },
+              "fontSize": {
+                "display-lg": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "label-technical": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                "headline-xl": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                "display-lg-mobile": ["40px", {"lineHeight": "1.1", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="bg-background font-body-md">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full flex justify-between items-center px-margin-desktop h-16 bg-background/80 backdrop-blur-xl z-50 border-b border-outline-variant/30 shadow-[0_0_20px_rgba(236,186,255,0.15)]">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-headline-lg font-black tracking-tighter text-primary italic">POIRO</span>
+<nav class="hidden md:flex gap-6">
+<a class="font-label-technical text-label-technical uppercase tracking-widest text-primary border-b-2 border-primary pb-1 transition-all duration-200 active:scale-95" href="#">Arena</a>
+<a class="font-label-technical text-label-technical uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:bg-primary/10 transition-all duration-200 active:scale-95" href="#">Lobby</a>
+<a class="font-label-technical text-label-technical uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:bg-primary/10 transition-all duration-200 active:scale-95" href="#">Rankings</a>
+<a class="font-label-technical text-label-technical uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:bg-primary/10 transition-all duration-200 active:scale-95" href="#">Lab</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">bolt</button>
+<button class="bg-primary text-on-primary px-6 py-2 font-label-technical text-label-sm uppercase font-bold tech-corner transition-all hover:glow-primary active:scale-95">Connect Wallet</button>
+</div>
+</header>
+<!-- SideNavBar (Hidden on small screens) -->
+<aside class="hidden lg:flex flex-col fixed left-0 top-16 h-[calc(100vh-64px)] bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-64 z-40">
+<div class="p-6 border-b border-outline-variant/10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary/20 border border-primary/40 flex items-center justify-center tech-corner overflow-hidden">
+<img alt="Elite Pilot Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzIJDM2saQhsU2ghuI_1qKMFp_kAZ06cVr6zWhGy_6AxvGQwlRee2A1OIhRmHHPlKCkr_YF-RupxiouEjT5iMIStJSpB882MATbm1vlSpXemQawYxnxSBYKnl8BkavCZOSb-_z1c14VbsaqDNRCRVuWncg9TfYgEDX0eASeOSKnNqlaubiEiBgV9OeEB9lGXCMx4SET22S7QHjwdRuiR309nomwz8PKC8dQj4TQGsF2UEj7M6roxhWRjYEL5_CyYf1kYS50MXJj2M"/>
+</div>
+<div>
+<h3 class="font-label-technical text-primary text-label-sm leading-tight">OPERATOR_01</h3>
+<p class="font-label-technical text-outline text-[10px] tracking-widest">RANK: PHANTOM</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 py-4 overflow-y-auto">
+<div class="px-3 mb-2">
+<button class="w-full py-3 bg-secondary/10 text-secondary border-r-4 border-secondary flex items-center gap-3 px-4 transition-transform duration-300 ease-in-out hover:glow-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">swords</span>
+<span class="font-label-technical text-label-sm uppercase tracking-wider">Live Battles</span>
+</button>
+</div>
+<div class="px-3 mb-2">
+<button class="w-full py-3 text-outline hover:text-on-surface hover:bg-white/5 flex items-center gap-3 px-4 transition-transform duration-300 ease-in-out">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-technical text-label-sm uppercase tracking-wider">My Prompts</span>
+</button>
+</div>
+<div class="px-3 mb-2">
+<button class="w-full py-3 text-outline hover:text-on-surface hover:bg-white/5 flex items-center gap-3 px-4 transition-transform duration-300 ease-in-out">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-technical text-label-sm uppercase tracking-wider">Stakes</span>
+</button>
+</div>
+<div class="px-3 mb-2">
+<button class="w-full py-3 text-outline hover:text-on-surface hover:bg-white/5 flex items-center gap-3 px-4 transition-transform duration-300 ease-in-out">
+<span class="material-symbols-outlined">shield</span>
+<span class="font-label-technical text-label-sm uppercase tracking-wider">Armory</span>
+</button>
+</div>
+<div class="px-3 mb-2">
+<button class="w-full py-3 text-outline hover:text-on-surface hover:bg-white/5 flex items-center gap-3 px-4 transition-transform duration-300 ease-in-out">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-technical text-label-sm uppercase tracking-wider">Settings</span>
+</button>
+</div>
+</nav>
+<div class="mt-auto p-4 border-t border-outline-variant/10">
+<button class="w-full py-3 border border-secondary text-secondary font-label-technical text-label-sm uppercase tracking-widest tech-corner hover:bg-secondary/10 transition-colors mb-4">
+                NEW BATTLE
+            </button>
+<div class="flex justify-around text-outline">
+<button class="hover:text-tertiary flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[18px]">help</span>
+<span class="font-label-technical text-[10px]">Support</span>
+</button>
+<button class="hover:text-tertiary flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+<span class="font-label-technical text-[10px]">Logs</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-64 pt-24 pb-12 px-margin-mobile md:px-margin-desktop min-h-screen">
+<div class="max-w-container-max mx-auto">
+<div class="flex flex-col lg:flex-row gap-8">
+<!-- Lobby Section -->
+<div class="flex-1">
+<div class="flex items-center justify-between mb-8">
+<div class="flex flex-col">
+<h1 class="font-headline-xl text-headline-xl text-primary tracking-tight">ACTIVE_LOBBY</h1>
+<p class="font-label-technical text-on-surface-variant text-label-sm opacity-60">SCANNING FOR HIGH-STAKES INSTANCES...</p>
+</div>
+<div class="flex gap-2">
+<span class="bg-tertiary/10 text-tertiary border border-tertiary/30 px-3 py-1 font-label-technical text-[10px] uppercase">Servers: Optimal</span>
+<span class="bg-secondary/10 text-secondary border border-secondary/30 px-3 py-1 font-label-technical text-[10px] uppercase">Latency: 12ms</span>
+</div>
+</div>
+<!-- Filter Bar -->
+<div class="flex gap-4 mb-8 overflow-x-auto pb-2">
+<button class="px-6 py-2 bg-primary text-on-primary font-label-technical text-label-sm uppercase tech-corner">All Battles</button>
+<button class="px-6 py-2 border border-outline-variant/30 text-outline-variant font-label-technical text-label-sm uppercase tech-corner hover:border-primary hover:text-primary">High Stakes</button>
+<button class="px-6 py-2 border border-outline-variant/30 text-outline-variant font-label-technical text-label-sm uppercase tech-corner hover:border-primary hover:text-primary">Beginner</button>
+<button class="px-6 py-2 border border-outline-variant/30 text-outline-variant font-label-technical text-label-sm uppercase tech-corner hover:border-primary hover:text-primary">Tournament</button>
+</div>
+<!-- Battle Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Battle Card 1 -->
+<div class="glass-panel relative overflow-hidden group hover:glow-primary transition-all duration-300">
+<div class="scanline"></div>
+<div class="aspect-video w-full overflow-hidden bg-surface-container relative">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-60 group-hover:opacity-100 scale-110 group-hover:scale-100" data-alt="A cinematic wide-angle shot of a sprawling neon-lit cyberpunk city at night with towering skyscrapers reflecting on wet asphalt streets. The color palette is dominated by deep obsidians and vibrant magentas, creating a high-contrast futuristic atmosphere. Volumetric fog and glowing holographic advertisements fill the air between buildings, capturing the essence of a tech-heavy dystopian metropolis." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArDhQ2hmRvQtSkj5UebqceKwm-eCNoe-hNWF2VKn2slu19z0oViJAjQ45WUKXsFoNym2Ke60_KrCvZ5n5zkXQX4nKWCtIW_uvAC5jRNfE23f6rzZ6YoYmdglCtXUU17fhYp8_zZe-Ig1iAB9-WMjg_Pnt6pSgmIJdCYUH9KNV_MGMHUbtTZZ6sk7foDWGJ1eFHd-bP-uZC3eOlsDg7Q5_T7VOojEvRgSee_U5GKbhuAEzHKXYMFpJ1bZCrN6CyHye3UzenNuaDRYE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute top-4 left-4">
+<span class="bg-secondary text-on-secondary-container px-3 py-1 font-label-technical text-[10px] font-bold uppercase tech-corner">LIVE</span>
+</div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+<div>
+<p class="font-label-technical text-[10px] text-outline mb-1 uppercase tracking-widest">Host: VECTOR_ARC</p>
+<h2 class="font-headline-lg text-headline-lg text-on-surface leading-none uppercase">Cyberpunk Cityscapes</h2>
+</div>
+<div class="text-right">
+<p class="font-label-technical text-secondary text-headline-lg font-black leading-none">50<span class="text-label-sm">CR</span></p>
+</div>
+</div>
+</div>
+<div class="p-6">
+<div class="flex items-center justify-between mb-4">
+<div class="flex flex-col">
+<span class="text-outline font-label-technical text-[10px] uppercase">Current Load</span>
+<div class="flex items-center gap-2">
+<div class="flex gap-1">
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-outline-variant/30"></div>
+</div>
+<span class="font-label-technical text-label-sm text-secondary">8/12 Players</span>
+</div>
+</div>
+<button class="bg-primary/20 border border-primary text-primary px-8 py-2 font-label-technical text-label-sm uppercase tech-corner hover:bg-primary hover:text-on-primary transition-all active:scale-95">JOIN_INST</button>
+</div>
+</div>
+</div>
+<!-- Battle Card 2 -->
+<div class="glass-panel relative overflow-hidden group hover:glow-primary transition-all duration-300">
+<div class="aspect-video w-full overflow-hidden bg-surface-container relative">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-60 group-hover:opacity-100 scale-110 group-hover:scale-100" data-alt="An abstract visualization of deep space cosmic energy featuring swirling nebulae in deep emerald greens and electric blues. Brilliant stars and distant galaxies are scattered across a matte black void, creating an atmosphere of vastness and celestial wonder. The lighting is ethereal and glowy, with soft transitions between intense color bursts and infinite darkness, representing a high-energy creative frontier." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4kmZtzQeerSAL2GF2AvDLasoOP2zQKQadhs9zJDTL_R-G3l8fPjm_Ku8-OO0IQyjbxiO62hqcju1opiAJxCJZY0CZxTRDBm6YHjbFgAPsIuk4ldlIii1kFoU9MDQt4rVhfsTvQrPt4Ux72aqCug2uokLX_Z2IUVSeJg2s-4PPN--ATAXFYljVC7gJcmNGFLezS4NP7Jl6eEO1eEYCmrc_qwByqnzLF4GpNUuB0XwWJX5JqpQXdQs1ljRNiCaJ3ZDEbDPC2fpGZ5o"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute top-4 left-4">
+<span class="bg-primary text-on-primary px-3 py-1 font-label-technical text-[10px] font-bold uppercase tech-corner">PREPARING</span>
+</div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+<div>
+<p class="font-label-technical text-[10px] text-outline mb-1 uppercase tracking-widest">Host: NEURAL_MIND</p>
+<h2 class="font-headline-lg text-headline-lg text-on-surface leading-none uppercase">Cosmic Frontiers</h2>
+</div>
+<div class="text-right">
+<p class="font-label-technical text-secondary text-headline-lg font-black leading-none">120<span class="text-label-sm">CR</span></p>
+</div>
+</div>
+</div>
+<div class="p-6">
+<div class="flex items-center justify-between mb-4">
+<div class="flex flex-col">
+<span class="text-outline font-label-technical text-[10px] uppercase">Current Load</span>
+<div class="flex items-center gap-2">
+<div class="flex gap-1">
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-outline-variant/30"></div>
+<div class="w-1 h-3 bg-outline-variant/30"></div>
+<div class="w-1 h-3 bg-outline-variant/30"></div>
+</div>
+<span class="font-label-technical text-label-sm text-secondary">4/16 Players</span>
+</div>
+</div>
+<button class="bg-primary/20 border border-primary text-primary px-8 py-2 font-label-technical text-label-sm uppercase tech-corner hover:bg-primary hover:text-on-primary transition-all active:scale-95">RESERVE_SLOT</button>
+</div>
+</div>
+</div>
+<!-- Battle Card 3 -->
+<div class="glass-panel relative overflow-hidden group hover:glow-primary transition-all duration-300">
+<div class="aspect-video w-full overflow-hidden bg-surface-container relative">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-60 group-hover:opacity-100 scale-110 group-hover:scale-100" data-alt="A macro studio shot of liquid metal droplets suspended in mid-air, refracting colorful neon lights from an unseen source. The textures are incredibly smooth and reflective, with a mirror-like finish that shows hints of primary and tertiary accent colors. The lighting is precise and dramatic, casting sharp highlights and deep shadows that emphasize the organic yet metallic forms of the fluid, creating a technical and avant-garde aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgtUI36DXdITOR6Jrd_WY0Qwpm0f0_mFv6V8d_m38DQUAzHoN4pKlvPXKT2mAp72AUXxSLAG2Ao5iQUHCG2j8uaikMT3oZWjIDh0wCtPPlzXNyn5gkzrnZQXReG1zkSSx9mRBkF9jp-Vzyp4bofAznfgg6c5R1jzXNsKfoLGyqIGgbkl3d_ad6VuJQd3x3mIoE40Gb7wrk-NefQZlHLDeo2eD77sGOdHTIipVraw5YibjZpCszmClNBfz5tcsx0-5tKVjAOpIn33Q"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute top-4 left-4">
+<span class="bg-tertiary text-on-tertiary px-3 py-1 font-label-technical text-[10px] font-bold uppercase tech-corner">TOURNAMENT</span>
+</div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+<div>
+<p class="font-label-technical text-[10px] text-outline mb-1 uppercase tracking-widest">Host: POIRO_OFFICIAL</p>
+<h2 class="font-headline-lg text-headline-lg text-on-surface leading-none uppercase">Liquid Metal Flow</h2>
+</div>
+<div class="text-right">
+<p class="font-label-technical text-secondary text-headline-lg font-black leading-none">500<span class="text-label-sm">CR</span></p>
+</div>
+</div>
+</div>
+<div class="p-6">
+<div class="flex items-center justify-between mb-4">
+<div class="flex flex-col">
+<span class="text-outline font-label-technical text-[10px] uppercase">Current Load</span>
+<div class="flex items-center gap-2">
+<div class="flex gap-1">
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-secondary"></div>
+</div>
+<span class="font-label-technical text-label-sm text-secondary">32/32 Full</span>
+</div>
+</div>
+<button class="bg-outline-variant/20 border border-outline-variant/30 text-outline px-8 py-2 font-label-technical text-label-sm uppercase tech-corner cursor-not-allowed">SPECTATE</button>
+</div>
+</div>
+</div>
+<!-- Battle Card 4 -->
+<div class="glass-panel relative overflow-hidden group hover:glow-primary transition-all duration-300">
+<div class="aspect-video w-full overflow-hidden bg-surface-container relative">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 opacity-60 group-hover:opacity-100 scale-110 group-hover:scale-100" data-alt="A vintage computer workspace from the 1980s re-imagined with high-tech glowing components and fiber-optic cables. An old cathode-ray tube monitor displays green monochromatic text codes while surrounded by modern luminous gas accents in teal and lime green. The setting is cluttered with technological artifacts and circuit boards, blending retro-futuristic nostalgia with clean industrial design and sharp precision lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfV4BvvQJNmIykVWv8C7vt2uXEvaxrE8DZRMLkZgJNYPRt4CeM1SmmdLeWEHzG9HF24rHbBXn_cB-tA-ufMgxj1HQeRSFKxdoeg5uob9MTXGatcsMxRWr5l8E8xrx3GT-6cvBTI5ATqXknlct8ytJgfOOZC7mJjF1Gbxbm0H47UeZQJoGGMlothAfz0LzyfG5EW7_p0_Uk2SusBZpmmHYFtR76M34SF6Hv3j7W9JulrZ0DNNewwfj0jAtcQeHjrKCgCYwezTy5e04"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute top-4 left-4">
+<span class="bg-secondary text-on-secondary-container px-3 py-1 font-label-technical text-[10px] font-bold uppercase tech-corner">LIVE</span>
+</div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between items-end">
+<div>
+<p class="font-label-technical text-[10px] text-outline mb-1 uppercase tracking-widest">Host: RETRO_GLITCH</p>
+<h2 class="font-headline-lg text-headline-lg text-on-surface leading-none uppercase">Analog Dystopia</h2>
+</div>
+<div class="text-right">
+<p class="font-label-technical text-secondary text-headline-lg font-black leading-none">25<span class="text-label-sm">CR</span></p>
+</div>
+</div>
+</div>
+<div class="p-6">
+<div class="flex items-center justify-between mb-4">
+<div class="flex flex-col">
+<span class="text-outline font-label-technical text-[10px] uppercase">Current Load</span>
+<div class="flex items-center gap-2">
+<div class="flex gap-1">
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-outline-variant/30"></div>
+<div class="w-1 h-3 bg-outline-variant/30"></div>
+<div class="w-1 h-3 bg-outline-variant/30"></div>
+<div class="w-1 h-3 bg-outline-variant/30"></div>
+</div>
+<span class="font-label-technical text-label-sm text-secondary">2/8 Players</span>
+</div>
+</div>
+<button class="bg-primary/20 border border-primary text-primary px-8 py-2 font-label-technical text-label-sm uppercase tech-corner hover:bg-primary hover:text-on-primary transition-all active:scale-95">JOIN_INST</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- My Stats Sidebar -->
+<aside class="w-full lg:w-80">
+<div class="glass-panel p-8 sticky top-24">
+<div class="flex flex-col items-center mb-10">
+<div class="relative w-24 h-24 mb-6">
+<div class="absolute inset-0 border-2 border-primary border-t-transparent animate-spin duration-[3s] rounded-full"></div>
+<div class="absolute inset-2 border-2 border-secondary border-b-transparent animate-spin-reverse duration-[2s] rounded-full"></div>
+<div class="absolute inset-0 bg-primary/10 tech-corner overflow-hidden flex items-center justify-center m-3">
+<img alt="Elite Pilot Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDWImhlq67rQaDPwm71SdRuGGm1bM0cPWtxCsHcu3-RJSLXjFH0PzFFAVOsYarGbz0JP-y6UP2Qt26-5Mj73WTP93ndqE_OvYi297t5QkXJKkWJyXlDGi5o9GnuFe4fRE3ykybNx7dWtZOEGRY9pV23vhB6_C51H-GanVr1PbahwssUhvGPbt9wb8W8pQgHYLzmglXUA52-dyBu2HOsLagQEpB7OqepoJwMstsAzJBgI4lF7uxp_ZpsTl5r_9ISFAp08cSgPTwJvE"/>
+</div>
+</div>
+<h2 class="font-headline-lg text-on-surface uppercase tracking-tight">OPERATOR_01</h2>
+<p class="font-label-technical text-primary text-label-sm">LEVEL 44 // ELITE</p>
+</div>
+<div class="space-y-6">
+<!-- Rank -->
+<div class="flex flex-col border-b border-outline-variant/10 pb-4">
+<span class="text-outline font-label-technical text-[10px] uppercase tracking-widest mb-1">Global Standing</span>
+<div class="flex items-end justify-between">
+<span class="font-headline-lg text-on-surface leading-none">#1,244</span>
+<span class="text-tertiary font-label-technical text-label-sm">+12 Today</span>
+</div>
+</div>
+<!-- Wins -->
+<div class="flex flex-col border-b border-outline-variant/10 pb-4">
+<span class="text-outline font-label-technical text-[10px] uppercase tracking-widest mb-1">Combat History</span>
+<div class="flex items-end justify-between">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-lg text-on-surface leading-none">142</span>
+<span class="text-outline text-label-sm">WINS</span>
+</div>
+<span class="font-label-technical text-label-sm text-on-surface opacity-60">68% WR</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest mt-3 overflow-hidden">
+<div class="h-full bg-primary" style="width: 68%;"></div>
+</div>
+</div>
+<!-- Credits -->
+<div class="flex flex-col">
+<span class="text-outline font-label-technical text-[10px] uppercase tracking-widest mb-1">Available Credits</span>
+<div class="flex items-end justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-headline-lg text-secondary leading-none">12,850</span>
+</div>
+<button class="bg-secondary/10 hover:bg-secondary/20 p-1 tech-corner transition-colors">
+<span class="material-symbols-outlined text-secondary text-[20px]">add</span>
+</button>
+</div>
+</div>
+<!-- Recent Trophies -->
+<div class="pt-4">
+<span class="text-outline font-label-technical text-[10px] uppercase tracking-widest mb-3 block">Recent Honors</span>
+<div class="flex gap-3">
+<div class="w-10 h-10 bg-surface-container flex items-center justify-center border border-outline-variant/30 hover:border-primary transition-colors cursor-help" title="Early Adopter">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">verified</span>
+</div>
+<div class="w-10 h-10 bg-surface-container flex items-center justify-center border border-outline-variant/30 hover:border-primary transition-colors cursor-help" title="10-Win Streak">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">military_tech</span>
+</div>
+<div class="w-10 h-10 bg-surface-container flex items-center justify-center border border-outline-variant/30 hover:border-primary transition-colors cursor-help" title="Top 1% Architect">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">architecture</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full mt-10 bg-primary text-on-primary font-label-technical text-label-sm py-4 uppercase font-bold tech-corner hover:glow-primary transition-all active:scale-95">
+                            VIEW_DETAILED_REPORTS
+                        </button>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-auto px-margin-desktop border-t border-outline-variant/10 py-12 bg-background flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex flex-col items-center md:items-start">
+<span class="text-on-surface font-black font-display-lg text-headline-lg italic">POIRO</span>
+<p class="font-label-technical text-label-sm tracking-tight text-outline mt-2">© 2024 POIRO NEURAL SYSTEMS. ALL RIGHTS RESERVED.</p>
+</div>
+<div class="flex gap-8">
+<a class="font-label-technical text-label-sm tracking-tight text-outline hover:text-tertiary transition-colors" href="#">Terms of Service</a>
+<a class="font-label-technical text-label-sm tracking-tight text-outline hover:text-tertiary transition-colors" href="#">Privacy Protocol</a>
+<a class="font-label-technical text-label-sm tracking-tight text-outline hover:text-tertiary transition-colors" href="#">API Docs</a>
+<a class="font-label-technical text-label-sm tracking-tight text-outline hover:text-tertiary transition-colors" href="#">System Status</a>
+</div>
+</footer>
+<script>
+        // Micro-interaction: Dynamic scanline effect on lobby cards
+        document.querySelectorAll('.glass-panel').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const scanline = card.querySelector('.scanline');
+                if (scanline) {
+                    scanline.style.animationDuration = '1.5s';
+                }
+            });
+            card.addEventListener('mouseleave', () => {
+                const scanline = card.querySelector('.scanline');
+                if (scanline) {
+                    scanline.style.animationDuration = '3s';
+                }
+            });
+        });
+
+        // Simple reactive-like toggle for filters
+        const filterBtns = document.querySelectorAll('.flex.gap-4.mb-8 button');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-primary', 'text-on-primary');
+                    b.classList.add('border', 'border-outline-variant/30', 'text-outline-variant');
+                });
+                btn.classList.add('bg-primary', 'text-on-primary');
+                btn.classList.remove('border', 'border-outline-variant/30', 'text-outline-variant');
+            });
+        });
+    </script>
+</body></html>

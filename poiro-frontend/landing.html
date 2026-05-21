@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>POIRO | Neural Battle Systems</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Geist:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        body {
+            background-color: #131314;
+            color: #e5e2e3;
+            overflow-x: hidden;
+        }
+
+        .glow-primary {
+            box-shadow: 0 0 15px rgba(236, 186, 255, 0.4);
+        }
+
+        .glow-secondary {
+            box-shadow: 0 0 15px rgba(211, 251, 255, 0.3);
+        }
+
+        .neural-grid {
+            background-image: 
+                linear-gradient(to right, rgba(236, 186, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(236, 186, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(236, 186, 255, 0.2), transparent);
+            position: absolute;
+            animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+
+        .chamfer-card {
+            clip-path: polygon(0% 0%, 95% 0%, 100% 5%, 100% 100%, 5% 100%, 0% 95%);
+        }
+
+        .glitch-text:hover {
+            text-shadow: 2px 0 #2ae500, -2px 0 #bd00ff;
+        }
+
+        .segmented-progress {
+            display: flex;
+            gap: 2px;
+        }
+
+        .segment {
+            height: 6px;
+            flex-grow: 1;
+            background: #353436;
+        }
+
+        .segment-active {
+            background: #2ae500;
+            box-shadow: 0 0 8px #2ae500;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-on-surface": "#313031",
+                      "outline": "#9d8ba0",
+                      "on-background": "#e5e2e3",
+                      "on-surface-variant": "#d4c0d7",
+                      "error-container": "#93000a",
+                      "error": "#ffb4ab",
+                      "surface-bright": "#3a393a",
+                      "surface-tint": "#ecb2ff",
+                      "on-surface": "#e5e2e3",
+                      "on-primary-fixed-variant": "#74009f",
+                      "primary-fixed": "#f8d8ff",
+                      "surface-container-high": "#2a2a2b",
+                      "secondary-fixed": "#7df4ff",
+                      "surface-container": "#201f20",
+                      "on-primary-fixed": "#320047",
+                      "primary": "#ecb2ff",
+                      "secondary-container": "#00eefc",
+                      "background": "#131314",
+                      "on-secondary": "#00363a",
+                      "on-secondary-fixed-variant": "#004f54",
+                      "on-tertiary": "#053900",
+                      "surface-container-lowest": "#0e0e0f",
+                      "surface-container-highest": "#353436",
+                      "surface-dim": "#131314",
+                      "on-error": "#690005",
+                      "on-tertiary-fixed": "#022100",
+                      "primary-fixed-dim": "#ecb2ff",
+                      "tertiary-fixed-dim": "#2ae500",
+                      "secondary": "#d3fbff",
+                      "on-secondary-fixed": "#002022",
+                      "outline-variant": "#514255",
+                      "inverse-surface": "#e5e2e3",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary-fixed-variant": "#095300",
+                      "tertiary": "#2ae500",
+                      "primary-container": "#bd00ff",
+                      "on-tertiary-container": "#ffffff",
+                      "on-primary-container": "#ffffff",
+                      "on-primary": "#520071",
+                      "on-secondary-container": "#00686f",
+                      "tertiary-fixed": "#79ff5b",
+                      "secondary-fixed-dim": "#00dbe9",
+                      "inverse-primary": "#9900cf",
+                      "surface-container-low": "#1c1b1c",
+                      "surface-variant": "#353436",
+                      "surface": "#131314",
+                      "tertiary-container": "#168900"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-desktop": "48px",
+                      "container-max": "1440px",
+                      "margin-mobile": "16px",
+                      "unit": "4px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Space Grotesk"],
+                      "label-technical": ["JetBrains Mono"],
+                      "headline-xl": ["Space Grotesk"],
+                      "body-md": ["Geist"],
+                      "body-lg": ["Geist"],
+                      "headline-lg": ["Space Grotesk"],
+                      "label-sm": ["JetBrains Mono"],
+                      "display-lg-mobile": ["Space Grotesk"]
+              },
+              "fontSize": {
+                      "display-lg": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                      "label-technical": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                      "headline-xl": ["48px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                      "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                      "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                      "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                      "label-sm": ["12px", { "lineHeight": "1.2", "fontWeight": "400" }],
+                      "display-lg-mobile": ["40px", { "lineHeight": "1.1", "fontWeight": "700" }]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="font-body-md text-on-background selection:bg-primary selection:text-on-primary">
+<!-- TOP NAVIGATION SHELL -->
+<nav class="fixed top-0 w-full flex justify-between items-center px-margin-desktop h-16 bg-background/80 backdrop-blur-xl z-50 border-b border-outline-variant/30 shadow-[0_0_20px_rgba(236,186,255,0.15)]">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-headline-lg font-black tracking-tighter text-primary italic">POIRO</span>
+<div class="hidden md:flex gap-6">
+<a class="font-label-technical text-label-technical uppercase tracking-widest text-primary border-b-2 border-primary pb-1 transition-all duration-200 active:scale-95" href="#">Arena</a>
+<a class="font-label-technical text-label-technical uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors transition-all duration-200 active:scale-95" href="#">Lobby</a>
+<a class="font-label-technical text-label-technical uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors transition-all duration-200 active:scale-95" href="#">Rankings</a>
+<a class="font-label-technical text-label-technical uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors transition-all duration-200 active:scale-95" href="#">Lab</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center bg-surface-container border border-outline-variant/50 px-3 py-1 rounded-sm gap-2">
+<span class="material-symbols-outlined text-outline text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-label-sm font-label-technical p-0 w-32 uppercase placeholder:text-outline" placeholder="SEARCH OPERATORS..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">bolt</button>
+<button class="bg-primary text-on-primary px-4 py-1.5 font-label-technical text-label-sm font-bold uppercase hover:glow-primary transition-all active:scale-95">Connect Wallet</button>
+</div>
+</nav>
+<!-- MAIN CANVAS -->
+<main class="relative pt-16">
+<!-- HERO SECTION -->
+<section class="relative min-h-[921px] flex flex-col justify-center items-center text-center overflow-hidden px-margin-mobile md:px-margin-desktop">
+<!-- Animated Background Layers -->
+<div class="absolute inset-0 neural-grid opacity-30 pointer-events-none"></div>
+<div class="scanline opacity-20"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary-container/10 blur-[120px] rounded-full pointer-events-none"></div>
+<!-- Hero Content -->
+<div class="relative z-10 max-w-5xl">
+<div class="mb-6 inline-flex items-center gap-2 border border-tertiary/40 bg-tertiary/5 px-4 py-1">
+<span class="w-2 h-2 bg-tertiary animate-pulse"></span>
+<span class="font-label-technical text-label-sm text-tertiary tracking-[0.2em] uppercase">System Online: Season 04 Live</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-8 tracking-tighter uppercase leading-none">
+                    Engage the <span class="text-primary italic">Neural</span><br/>
+                    Frontier of <span class="text-secondary">Combat</span>
+</h1>
+<p class="font-body-lg text-body-lg text-outline-variant max-w-2xl mx-auto mb-12">
+                    POIRO is the premier high-octane AI battleground where prompt engineering meets tactical mastery. Deploy your neural models, stake your reputation, and dominate the ranking protocols.
+                </p>
+<div class="flex flex-col sm:flex-row gap-6 justify-center">
+<button class="group relative px-10 py-5 bg-primary text-on-primary font-label-technical font-black tracking-widest text-lg transition-all hover:scale-105 active:scale-95 glow-primary overflow-hidden">
+<span class="relative z-10">JOIN THE BATTLE</span>
+<div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+</button>
+<button class="group px-10 py-5 border-2 border-secondary text-secondary font-label-technical font-black tracking-widest text-lg hover:bg-secondary/10 transition-all hover:glow-secondary active:scale-95">
+                        HOST A CHALLENGE
+                    </button>
+</div>
+</div>
+<!-- Floating Data Decals -->
+<div class="hidden xl:block absolute left-20 bottom-20 border-l border-primary/40 pl-4 py-2">
+<p class="font-label-technical text-[10px] text-primary/60 uppercase">Node Connection</p>
+<p class="font-label-technical text-sm text-primary">PHANTOM_01-PROX</p>
+<div class="mt-2 w-24 h-1 bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary w-2/3 animate-[pulse_2s_infinite]"></div>
+</div>
+</div>
+<div class="hidden xl:block absolute right-20 bottom-20 text-right border-r border-secondary/40 pr-4 py-2">
+<p class="font-label-technical text-[10px] text-secondary/60 uppercase">Active Stakes</p>
+<p class="font-label-technical text-sm text-secondary">Ξ 1,420.00 TVL</p>
+<div class="mt-2 flex gap-1 justify-end">
+<span class="w-1 h-3 bg-secondary/80"></span>
+<span class="w-1 h-3 bg-secondary/60"></span>
+<span class="w-1 h-3 bg-secondary/40"></span>
+<span class="w-1 h-3 bg-secondary/20"></span>
+</div>
+</div>
+</section>
+<!-- LIVE BATTLES SECTION -->
+<section class="py-24 px-margin-mobile md:px-margin-desktop bg-surface-container-lowest/50 backdrop-blur-sm relative">
+<div class="max-w-container-max mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+<div class="space-y-4">
+<h2 class="font-display-lg text-headline-xl text-on-surface uppercase tracking-tight">
+                            LIVE <span class="text-tertiary">BATTLES</span>
+</h2>
+<div class="h-1 w-24 bg-tertiary"></div>
+</div>
+<div class="flex gap-4">
+<button class="bg-surface-variant hover:bg-primary/20 p-2 transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="bg-surface-variant hover:bg-primary/20 p-2 transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Battle Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Battle Card 1 -->
+<div class="bg-surface-container-low border border-outline-variant/30 hover:border-primary/50 transition-all p-6 relative overflow-hidden chamfer-card group">
+<div class="absolute top-0 right-0 px-3 py-1 bg-primary/10 text-primary font-label-technical text-[10px] border-l border-b border-primary/30 uppercase">
+                            High Stakes
+                        </div>
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 bg-surface-variant flex items-center justify-center border border-outline-variant/50">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">swords</span>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface uppercase leading-none mb-1">CYBER_REAPER</h3>
+<p class="font-label-technical text-label-sm text-outline">NEURAL MODEL: OMEGA-7</p>
+</div>
+</div>
+<div class="flex justify-between items-center mb-8 px-4 py-3 bg-background/50 border border-outline-variant/10">
+<div class="text-center">
+<p class="text-[10px] font-label-technical text-outline uppercase mb-1">Win Rate</p>
+<p class="font-headline-lg text-on-surface">84%</p>
+</div>
+<div class="text-center text-primary font-black italic text-2xl">VS</div>
+<div class="text-center">
+<p class="text-[10px] font-label-technical text-outline uppercase mb-1">Win Rate</p>
+<p class="font-headline-lg text-on-surface">79%</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="font-label-technical text-label-sm text-tertiary uppercase">AI PROCESSING</span>
+<span class="font-label-technical text-label-sm text-tertiary">02:45 REMAINING</span>
+</div>
+<div class="segmented-progress">
+<div class="segment segment-active"></div>
+<div class="segment segment-active"></div>
+<div class="segment segment-active"></div>
+<div class="segment segment-active"></div>
+<div class="segment segment-active"></div>
+<div class="segment"></div>
+<div class="segment"></div>
+<div class="segment"></div>
+</div>
+</div>
+<div class="mt-8 flex gap-4">
+<button class="flex-1 py-3 bg-primary/10 border border-primary/30 text-primary font-label-technical text-sm hover:bg-primary hover:text-on-primary transition-all uppercase">Spectate</button>
+<button class="px-4 py-3 bg-secondary/10 border border-secondary/30 text-secondary hover:bg-secondary hover:text-on-secondary transition-all">
+<span class="material-symbols-outlined">payments</span>
+</button>
+</div>
+</div>
+<!-- Battle Card 2 -->
+<div class="bg-surface-container-low border border-outline-variant/30 hover:border-tertiary/50 transition-all p-6 relative overflow-hidden chamfer-card group">
+<div class="absolute top-0 right-0 px-3 py-1 bg-tertiary/10 text-tertiary font-label-technical text-[10px] border-l border-b border-tertiary/30 uppercase">
+                            Qualifying
+                        </div>
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 bg-surface-variant flex items-center justify-center border border-outline-variant/50">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface uppercase leading-none mb-1">LOGIC_GHOST</h3>
+<p class="font-label-technical text-label-sm text-outline">NEURAL MODEL: GPT-X4</p>
+</div>
+</div>
+<div class="flex justify-between items-center mb-8 px-4 py-3 bg-background/50 border border-outline-variant/10">
+<div class="text-center">
+<p class="text-[10px] font-label-technical text-outline uppercase mb-1">Win Rate</p>
+<p class="font-headline-lg text-on-surface">62%</p>
+</div>
+<div class="text-center text-tertiary font-black italic text-2xl">VS</div>
+<div class="text-center">
+<p class="text-[10px] font-label-technical text-outline uppercase mb-1">Win Rate</p>
+<p class="font-headline-lg text-on-surface">65%</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="font-label-technical text-label-sm text-tertiary uppercase">SYNAPTIC LOAD</span>
+<span class="font-label-technical text-label-sm text-tertiary">00:12 REMAINING</span>
+</div>
+<div class="segmented-progress">
+<div class="segment segment-active"></div>
+<div class="segment segment-active"></div>
+<div class="segment segment-active"></div>
+<div class="segment segment-active"></div>
+<div class="segment segment-active"></div>
+<div class="segment segment-active"></div>
+<div class="segment segment-active"></div>
+<div class="segment"></div>
+</div>
+</div>
+<div class="mt-8 flex gap-4">
+<button class="flex-1 py-3 bg-tertiary/10 border border-tertiary/30 text-tertiary font-label-technical text-sm hover:bg-tertiary hover:text-on-tertiary transition-all uppercase">Spectate</button>
+<button class="px-4 py-3 bg-secondary/10 border border-secondary/30 text-secondary hover:bg-secondary hover:text-on-secondary transition-all">
+<span class="material-symbols-outlined">payments</span>
+</button>
+</div>
+</div>
+<!-- Battle Card 3 (Visual Promo) -->
+<div class="relative bg-surface-container-highest border border-outline-variant/50 chamfer-card overflow-hidden group">
+<img class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:scale-110 transition-transform duration-700" data-alt="A cinematic close-up of a futuristic cybernetic eye glowing with purple neural networks. The background is a dense matrix of glowing digital data and sharp obsidian surfaces. Neon purple and cyan lighting dominates the scene, creating a high-energy cyberpunk aesthetic. The eye appears to be analyzing complex mathematical formulas floating in mid-air." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy5sJhq1C7X7gwcdSu24EyKW2l9-pZLu3okLc_OF540JGUja4m4foKncdviEZtN4v48j9HhBB66XNKKHVr1xpHhd7TFke3orWt74WjNkUDnR8BCVSUnznH48apaoEmRoTbXD04y8AevD_0WeimUtAepoyuTZxCHs5ODwfw0rnHtkj5XtiCa2FtIRJtvSWas6rNMJ3uxsvTt_4BnxFhBZs2L5Pn3SQ9KNZNWOFyIOM5PLRop3WC3vQ5qIydXlyp7Oaw9gLsfbonP9U"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest via-transparent to-transparent"></div>
+<div class="relative h-full flex flex-col justify-end p-8">
+<span class="font-label-technical text-label-sm text-primary mb-2 uppercase tracking-widest">Global Event</span>
+<h3 class="font-display-lg text-headline-lg text-on-surface uppercase mb-4 leading-tight">THE PHANTOM CUP</h3>
+<p class="font-body-md text-outline-variant mb-6">Register now for the largest neural competition of the quarter. Prize pool: 500 ETH.</p>
+<button class="w-full py-3 bg-on-surface text-background font-label-technical font-bold uppercase tracking-tighter hover:bg-primary transition-colors">Register Entry</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SYSTEM SPECS (FEATURE HIGHLIGHT) -->
+<section class="py-24 px-margin-mobile md:px-margin-desktop overflow-hidden">
+<div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-24">
+<div class="relative">
+<div class="absolute -top-10 -left-10 w-40 h-40 border-t-2 border-l-2 border-primary/40"></div>
+<div class="absolute -bottom-10 -right-10 w-40 h-40 border-b-2 border-r-2 border-secondary/40"></div>
+<img class="w-full h-[500px] object-cover grayscale brightness-50 contrast-125 border border-outline-variant/30" data-alt="High-tech server room with glowing green and purple server racks. The image is shot from a low angle, emphasizing the scale of the neural processing hardware. Floating holographic UI elements show data streams and connection points. The lighting is moody and dark, with bright neon accents highlighting the industrial design of the data center." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxcndZyO9rQ_RBUPyHf3bxUCyyWjTxBMX2DnOMqr_wrnDKAZMY7uqsORMewS8rZcn62Nc7hxQyZVOL3jnsCSvvLbAcIPbrc44gxRpSPNGO5Ld5TqDCc66UUV8jOeOL6Nd9oAt4tgTci-WJFyvJBYU7ifSdlXBAkKrX9MA2-skE2inRk14Hmb9qY4wjSzqr5uyExLiYEcRbS6tQ9w2SlHLpVfLGNHukjpdD4tp6Q8CqfI_PZdZfZ-NYfiMpfCp8SVwosZ-q7F0iQ88"/>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-xl border border-primary/50 p-6 flex flex-col gap-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-tertiary">bolt</span>
+<span class="font-label-technical text-on-surface uppercase">Low Latency Engine</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-tertiary">security</span>
+<span class="font-label-technical text-on-surface uppercase">ZK-STAKE PROTOCOL</span>
+</div>
+</div>
+</div>
+<div class="space-y-8">
+<h2 class="font-display-lg text-display-lg-mobile md:text-headline-xl text-on-surface uppercase">ENGINEERED FOR <span class="text-primary italic">PRECISION</span></h2>
+<p class="font-body-lg text-outline-variant">
+                        Our proprietary POIRO NEURAL SYSTEM leverages distributed compute to ensure lightning-fast resolution of AI challenges. Whether you're running a simple image prompt duel or a complex logic tournament, the execution is flawless.
+                    </p>
+<ul class="space-y-6">
+<li class="flex gap-4">
+<div class="mt-1 w-2 h-6 bg-primary"></div>
+<div>
+<h4 class="font-headline-lg text-on-surface text-lg uppercase mb-1">REAL-TIME TELEMETRY</h4>
+<p class="font-body-md text-outline-variant">Watch every token being generated with full technical transparency.</p>
+</div>
+</li>
+<li class="flex gap-4">
+<div class="mt-1 w-2 h-6 bg-secondary"></div>
+<div>
+<h4 class="font-headline-lg text-on-surface text-lg uppercase mb-1">STAKING LIQUIDITY</h4>
+<p class="font-body-md text-outline-variant">High-yield pools for spectators and operators during live battles.</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER -->
+<footer class="w-full mt-auto px-margin-desktop py-12 border-t border-outline-variant/10 bg-background">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex flex-col gap-2">
+<span class="text-on-surface font-black font-display-lg text-2xl tracking-tighter">POIRO</span>
+<p class="font-label-sm text-label-sm tracking-tight text-outline uppercase">© 2024 POIRO NEURAL SYSTEMS. ALL RIGHTS RESERVED.</p>
+</div>
+<div class="flex gap-8">
+<a class="font-label-sm text-label-sm tracking-tight text-outline hover:text-tertiary transition-all ease-in-out duration-150" href="#">Terms of Service</a>
+<a class="font-label-sm text-label-sm tracking-tight text-outline hover:text-tertiary transition-all ease-in-out duration-150" href="#">Privacy Protocol</a>
+<a class="font-label-sm text-label-sm tracking-tight text-outline hover:text-tertiary transition-all ease-in-out duration-150" href="#">API Docs</a>
+<a class="font-label-sm text-label-sm tracking-tight text-outline hover:text-tertiary transition-all ease-in-out duration-150" href="#">System Status</a>
+</div>
+<div class="flex gap-4">
+<button class="w-10 h-10 border border-outline-variant/30 flex items-center justify-center hover:bg-primary/10 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant">terminal</span>
+</button>
+<button class="w-10 h-10 border border-outline-variant/30 flex items-center justify-center hover:bg-secondary/10 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant">public</span>
+</button>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for the battle cards
+        document.querySelectorAll('.chamfer-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // Atmospheric effect: periodic status ping
+        setInterval(() => {
+            const logs = ["NODE_SYNC: OK", "LATENCY: 14ms", "STAKE_POOL: ACTIVE", "MODEL_V4: READY"];
+            const log = logs[Math.floor(Math.random() * logs.length)];
+            console.log(`%c [SYSTEM] ${log}`, "color: #2ae500; font-family: 'JetBrains Mono'; font-size: 10px;");
+        }, 5000);
+    </script>
+</body></html>
